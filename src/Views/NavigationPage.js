@@ -9,7 +9,7 @@ import {
 } from 'react-router-dom';
 import './NavigationPageStyles.css';
 import IntroPage from './Intro/IntroPage';
-import FaceRecognition from './FaceRecognition/FaceRecognitionPage';
+//import FaceRecognitionPage from './FaceRecognition/FaceRecognitionPage';
 
 // This site has 3 pages, all of which are rendered
 // dynamically in the browser (not server rendered).
@@ -27,9 +27,9 @@ const Navigation = (parms) => {
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<IntroPage />} />
-          <Route path="facerecogniton" element={<FaceRecognition />} />
+          <Route path="facerecogniton" element={<FaceRecognitionPage />} />
           <Route path="dashboard" element={<Dashboard />} />
-          <Route path="*" element={<NoPage />} />
+          {/* <Route path="*" element={<NoPage />} /> */}
         </Route>
       </Routes>
     </Router>
@@ -109,6 +109,23 @@ function About() {
   return (
     <div>
       <h2>About</h2>
+    </div>
+  );
+}
+
+const FaceRecognition_Page = (parms) => {
+  return (
+    <div>
+      <p>Hello Face</p>
+    </div>
+  );
+};
+const FaceRecognitionPage2 = FaceRecognition_Page;
+
+function FaceRecognitionPage() {
+  return (
+    <div>
+      <h2>Hello Face</h2>
     </div>
   );
 }
