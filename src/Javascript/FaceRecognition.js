@@ -1,3 +1,36 @@
+import { CustomLogger } from './CustomLogger.js';
+import * as faceapi from 'face-api.js';
+
+export const loadModels = () => {
+  try {
+    const MODELS_PATH = './models'; //path.join(__dirname, './../Models');
+    CustomLogger.MessageLogger(MODELS_PATH);
+    faceapi.nets.ssdMobilenetv1.loadFromDisk(MODELS_PATH).then((result) => {
+      CustomLogger.MessageLogger('SSD model loaded');
+      faceapi.nets.faceRecognitionNet
+        .loadFromDisk(MODELS_PATH)
+        .then((result) => {
+          CustomLogger.MessageLogger('faceRecognitionNet model loaded');
+          faceapi.nets.faceLandmark68Net
+            .loadFromDisk(MODELS_PATH)
+            .then((result) => {
+              CustomLogger.MessageLogger('faceLandmark68Net model loaded');
+              //loadDescriptiors();
+            })
+            .catch((error) => {
+              CustomLogger.ErrorLogger(error);
+            });
+        })
+        .catch((error) => {
+          CustomLogger.ErrorLogger(error);
+        });
+    });
+  } catch (ex) {
+    CustomLogger.ErrorLogger(error);
+  }
+};
+
+/*
 const faceapiModule = require('./Modules/face-api.min.js');
 //const faceapiModule = require('face-api.js');
 const { CustomLogger } = require('./CustomLogger.js');
@@ -54,7 +87,7 @@ const loadRequiredModels = async () => {
       faceapi.nets.faceRecognitionNet.loadFromDisk(MODELS_PATH),
       faceapi.nets.faceLandmark68Net.loadFromDisk(MODELS_PATH),
     ]).then(AccessLocalImages()); //(AccessDriveImages(FolderAccessCode));
-    */
+    * /
   } catch (ex) {
     CustomLogger.ErrorLogger(ex);
   }
@@ -80,12 +113,12 @@ async function loadDescriptiors(faceAppoximity = 0.6) {
             Object.values(labeledFaceDescriptorsData[i].descriptions[j])
           );
         }
-        /**/
+        /** /
         labeledFaceDescriptorsData[i] = new faceapi.LabeledFaceDescriptors(
           labeledFaceDescriptorsData[i].label,
           labeledFaceDescriptorsData[i].descriptions
         );
-        /**/
+        /** /
       }
       //CustomLogger.ErrorLogger(`Result from mongo database /n ${JSON.stringify(labeledFaceDescriptorsData)}`);
       faceMatcher = new faceapi.FaceMatcher(labeledFaceDescriptorsData, 0.6);
@@ -103,7 +136,7 @@ async function SearchForFaces(imageData) {
     ''
   );
   try {
-    /**/
+    /** /
     if (faceMatcher !== null && faceMatcher !== undefined) {
       CustomLogger.MessageLogger('Got the Data');
       const imgToDetect = await canvas.loadImage(imageData.filesPath);
@@ -142,7 +175,7 @@ async function SearchForFaces(imageData) {
         responseImage = canvasInput.toDataURL(imageData.mime)
       });
       return responseImage;
-      /**/
+      /** /
       response = await Helper.createResponseObject(
         Helper.CodeSuccess,
         results,
@@ -155,7 +188,7 @@ async function SearchForFaces(imageData) {
         'Faces database not loaded completely, please wait ssometime and try again'
       );
     }
-    /**/
+    /** /
   } catch (ex) {
     response = await Helper.createResponseObject(
       Helper.CodeClientError,
@@ -174,3 +207,4 @@ module.exports = {
   SearchForFaces,
   loadDescriptiors,
 };
+*/
