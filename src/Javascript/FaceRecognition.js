@@ -5,6 +5,13 @@ export const loadModels = () => {
   try {
     const MODELS_PATH = './models'; //path.join(__dirname, './../Models');
     CustomLogger.MessageLogger(MODELS_PATH);
+    CustomLogger.MessageLogger('Testing');
+    Promise.all([
+      faceapi.nets.faceRecognitionNet.loadFromUri(MODELS_PATH),
+      faceapi.nets.faceLandmark68Net.loadFromUri(MODELS_PATH),
+      faceapi.nets.ssdMobilenetv1.loadFromUri(MODELS_PATH),
+    ]).then();
+    /*
     faceapi.nets.ssdMobilenetv1.loadFromDisk(MODELS_PATH).then((result) => {
       CustomLogger.MessageLogger('SSD model loaded');
       faceapi.nets.faceRecognitionNet
@@ -24,7 +31,7 @@ export const loadModels = () => {
         .catch((error) => {
           CustomLogger.ErrorLogger(error);
         });
-    });
+    });*/
   } catch (ex) {
     CustomLogger.ErrorLogger(error);
   }
