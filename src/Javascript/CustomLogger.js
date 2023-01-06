@@ -1,4 +1,4 @@
-const CustomLogger = {
+export const CustomLogger = {
   MessageLogger: (dataObject) => {
     try {
       //var dataObjectString = JSON.stringify(dataObject);
@@ -23,4 +23,3 @@ const CustomLogger = {
     }
   },
 };
-module.exports = { CustomLogger };
