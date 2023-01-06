@@ -1,5 +1,6 @@
 import { CustomLogger } from './CustomLogger.js';
 import * as faceapi from 'face-api.js';
+import * as mongoDataBase from './MongoDB.js';
 
 export const loadModels = async () => {
   try {
@@ -11,13 +12,13 @@ export const loadModels = async () => {
       faceapi.nets.faceRecognitionNet.loadFromDisk(MODELS_PATH),
       faceapi.nets.faceLandmark68Net.loadFromDisk(MODELS_PATH),
       faceapi.nets.ssdMobilenetv1.loadFromDisk(MODELS_PATH),
-    ]).then(LoadedModels());
+    ]).then(loadDescriptiors());
     */
     Promise.all([
       faceapi.nets.faceRecognitionNet.loadFromUri(MODELS_PATH),
       faceapi.nets.faceLandmark68Net.loadFromUri(MODELS_PATH),
       faceapi.nets.ssdMobilenetv1.loadFromUri(MODELS_PATH),
-    ]).then(LoadedModels());
+    ]).then(loadDescriptiors());
     /*
     faceapi.nets.ssdMobilenetv1.loadFromDisk(MODELS_PATH).then((result) => {
       CustomLogger.MessageLogger('SSD model loaded');
@@ -49,6 +50,42 @@ const LoadedModels = async () => {
     CustomLogger.MessageLogger('Loaded all the details');
   } catch (ex) {
     CustomLogger.ErrorLogger(error);
+  }
+};
+
+const loadDescriptiors = (faceAppoximity = 0.6) => {
+  try {
+    const labeledFaceDescriptorsData =
+      await mongoDataBase.GetAllFaceDescriptiors();
+    if (
+      labeledFaceDescriptorsData !== null &&
+      labeledFaceDescriptorsData !== undefined &&
+      labeledFaceDescriptorsData.length > 0
+    ) {
+      let labeledFaceDescriptors = [];
+      for (i = 0; i < labeledFaceDescriptorsData.length; i++) {
+        for (
+          j = 0;
+          j < labeledFaceDescriptorsData[i].descriptions.length;
+          j++
+        ) {
+          labeledFaceDescriptorsData[i].descriptions[j] = new Float32Array(
+            Object.values(labeledFaceDescriptorsData[i].descriptions[j])
+          );
+        }
+        /**/
+        labeledFaceDescriptorsData[i] = new faceapi.LabeledFaceDescriptors(
+          labeledFaceDescriptorsData[i].label,
+          labeledFaceDescriptorsData[i].descriptions
+        );
+        /**/
+      }
+      //CustomLogger.ErrorLogger(`Result from mongo database /n ${JSON.stringify(labeledFaceDescriptorsData)}`);
+      faceMatcher = new faceapi.FaceMatcher(labeledFaceDescriptorsData, 0.6);
+      CustomLogger.MessageLogger('Data loading completed');
+    }
+  } catch (ex) {
+    CustomLogger.ErrorLogger(ex);
   }
 };
 
