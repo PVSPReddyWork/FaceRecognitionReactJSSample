@@ -1,23 +1,23 @@
 import { CustomLogger } from './CustomLogger.js';
 import * as faceapi from 'face-api.js';
 
-export const loadModels = () => {
+export const loadModels = async () => {
   try {
     const MODELS_PATH = './models'; //path.join(__dirname, './../Models');
     CustomLogger.MessageLogger(MODELS_PATH);
     CustomLogger.MessageLogger('Testing');
+    /*
     Promise.all([
       faceapi.nets.faceRecognitionNet.loadFromDisk(MODELS_PATH),
       faceapi.nets.faceLandmark68Net.loadFromDisk(MODELS_PATH),
       faceapi.nets.ssdMobilenetv1.loadFromDisk(MODELS_PATH),
     ]).then(LoadedModels());
-    /*
+    */
     Promise.all([
       faceapi.nets.faceRecognitionNet.loadFromUri(MODELS_PATH),
       faceapi.nets.faceLandmark68Net.loadFromUri(MODELS_PATH),
       faceapi.nets.ssdMobilenetv1.loadFromUri(MODELS_PATH),
-    ]).then();
-    */
+    ]).then(LoadedModels());
     /*
     faceapi.nets.ssdMobilenetv1.loadFromDisk(MODELS_PATH).then((result) => {
       CustomLogger.MessageLogger('SSD model loaded');
@@ -44,7 +44,7 @@ export const loadModels = () => {
   }
 };
 
-const LoadedModels = () => {
+const LoadedModels = async () => {
   try {
     CustomLogger.MessageLogger('Loaded all the details');
   } catch (ex) {
