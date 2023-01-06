@@ -53,7 +53,7 @@ const LoadedModels = async () => {
   }
 };
 
-const loadDescriptiors = (faceAppoximity = 0.6) => {
+const loadDescriptiors = async (faceAppoximity = 0.6) => {
   try {
     const labeledFaceDescriptorsData =
       await mongoDataBase.GetAllFaceDescriptiors();

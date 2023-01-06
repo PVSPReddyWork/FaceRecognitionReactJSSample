@@ -1,5 +1,5 @@
-const { MongoClient, ServerApiVersion } = require('mongodb');
-const { CustomLogger } = require('./CustomLogger.js');
+import { MongoClient, ServerApiVersion } from 'mongodb';
+import { CustomLogger } from './CustomLogger.js';
 
 const uri =
   'mongodb+srv://pvspreddy_mongo:1234509876@cluster0.hxu712f.mongodb.net/?retryWrites=true&w=majority';
@@ -49,7 +49,7 @@ const SaveFaceDescriptiors = async (arrayOfValues) => {
   }
 };
 
-const GetAllFaceDescriptiors = async () => {
+export const GetAllFaceDescriptiors = async () => {
   try {
     await client.connect();
     const db = client.db('face_recognition');
@@ -72,5 +72,3 @@ const TestMongoConnection = async () => {
   client.close();
   return values;
 };
-
-module.exports = { GetAllFaceDescriptiors };
